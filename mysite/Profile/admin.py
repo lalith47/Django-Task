@@ -17,7 +17,3 @@ class ProfileAdmin(admin.ModelAdmin):
     # readonly_fields = ('image_tag',)
 
 admin.site.register(Profile,ProfileAdmin)
-
-
-
-

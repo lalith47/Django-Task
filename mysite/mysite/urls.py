@@ -20,9 +20,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from Profile import views
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.authtoken import views as v
+from rest_framework.documentation import include_docs_urls
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Django API')
 
 urlpatterns = format_suffix_patterns([
     path('admin/', admin.site.urls),
+    path('docs/', include_docs_urls(title='Django API')),
+    path('swagger-docs/', schema_view),
+    path('api-token-auth/',v.obtain_auth_token,name='api-token-auth'),
     url(r'^profile/$', views.UserData.as_view()),
     url(r'^profile/(?P<email_id>[\w\@\-\.]+)$', views.UserDetails.as_view()),
     url(r'^otherprofile/(?P<email_id>[\w\@\-\.]+)$', views.OtherUserDetails.as_view()),

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import django_heroku
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,26 +20,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-h5q#=jo+ge1ey=4!s9o&imx5a)!@)tq&m$p#s_!r^!pktm2b6'
+SECRET_KEY = 'dlk0rb-77@gu!vf^6zzfnuqy%&d&i-adi6ewce-99@=r-q(=fz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# REST_FRAMEWORK = {
-#     # Use Django's standard `django.contrib.auth` permissions,
-#     # or allow read-only access for unauthenticated users.
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-#     ]
-# }
-
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+         'rest_framework.authentication.BasicAuthentication',
+         'rest_framework.authentication.TokenAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication'
-        # 'rest_framework.permissions.DjangoModelPermissions',
-    )
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+
 }
 
 
@@ -54,9 +52,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'rest_auth',
+    'rest_framework_swagger',
+    'rest_auth',
     'Profile',
-    'Address'
+    'Address',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +139,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL='/images/'
 MEDIA_ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+django_heroku.settings(locals())
+
